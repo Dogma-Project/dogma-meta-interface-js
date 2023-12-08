@@ -26,18 +26,13 @@ function SetPrefix() {
         }
       },
     });
-  }, [prefix]);
-
-  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
-  };
+  }, [value]);
 
   const saveValue = () => {
-    const _prefix = "default";
     ApiRequest("POST", "/core/prefix", {
-      params: { prefix: _prefix },
+      params: { prefix: value },
       cb: () => {
-        dispatch({ type: "set", value: { prefix: _prefix } }); // edit
+        dispatch({ type: "set", value: { prefix: value } });
       },
     });
   };
@@ -61,7 +56,7 @@ function SetPrefix() {
             id="prefixField"
             aria-describedby="passwordHelpBlock"
             placeholder="For example: default"
-            onChange={onInputChange}
+            onChange={(e) => setValue(e.target.value)}
           />
           {/* <Form.Text id="passwordHelpBlock" muted>
             Your password must be 8-20 characters long, contain letters and
@@ -82,7 +77,7 @@ function SetPrefix() {
       </Card>
     </Container>
   ) : (
-    <div>FETCHING PREFIX</div>
+    <div>FETCHING PREFIX...</div>
   );
 }
 

@@ -3,6 +3,7 @@ import { AppContext } from "../context";
 import ApiRequest from "../helpers/request";
 import AppLayout from "./app-layout";
 import { C_Event } from "@dogma-project/constants-meta";
+import InitLayout from "./init-layout";
 
 function ServicesManager() {
   const {
@@ -48,16 +49,12 @@ function ServicesManager() {
     setStage(4);
   }, [services]);
 
-  return stage === 1 ? (
-    <div>Set user</div>
-  ) : stage === 2 ? (
-    <div>Set node</div>
-  ) : stage === 3 ? (
-    <div>Set config</div>
+  return stage === 0 ? (
+    <div>Loading...</div>
   ) : stage === 4 ? (
     <AppLayout></AppLayout>
   ) : (
-    <div>Loading</div>
+    <InitLayout stage={stage}></InitLayout>
   );
 }
 
