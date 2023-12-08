@@ -1,13 +1,36 @@
 {
   "name": "@dogma-project/interface-meta",
-  "private": true,
-  "version": "0.2.2",
+  "private": false,
+  "version": "0.2.5",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
+  },
+  "author": {
+    "name": "Rotegott",
+    "email": "rotegott@dogma-project.org",
+    "url": "https://dogma-project.org/"
+  },
+  "homepage": "https://meta.dogma-project.org/",
+  "keywords": [
+    "dogma",
+    "dogma meta",
+    "dogma headless",
+    "dogma interface",
+    "decentralization",
+    "p2p"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dogma-Project/dogma-meta-interface-js"
+  },
+  "bugs": {
+    "url": "https://github.com/Dogma-Project/dogma-meta-interface-js/issues",
+    "email": "rotegott@dogma-project.org"
   },
   "dependencies": {
     "@dogma-project/constants-meta": "^0.5.4",
