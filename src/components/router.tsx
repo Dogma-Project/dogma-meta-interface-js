@@ -2,6 +2,8 @@ import { createHashRouter } from "react-router-dom";
 import Home from "./modules/home";
 import Network from "./modules/network";
 import Services from "./modules/services";
+import Settings from "./modules/settings";
+import About from "./modules/about";
 
 const router = createHashRouter(
   [
@@ -16,6 +18,14 @@ const router = createHashRouter(
     {
       path: "/services",
       element: <Services />,
+    },
+    {
+      path: "/settings",
+      element: <Settings />,
+    },
+    {
+      path: "/about",
+      element: <About />,
     },
   ],
   {}

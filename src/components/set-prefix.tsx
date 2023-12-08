@@ -1,43 +1,30 @@
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../context";
-
+import { useState, useContext } from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
-import ApiRequest from "../helpers/request";
+import { AppContext } from "../context";
 
-function SetPrefix() {
-  const {
-    state: { prefix },
-    dispatch,
-  } = useContext(AuthContext);
+function SetPrefix({
+  setPrefix,
+}: {
+  setPrefix: React.Dispatch<React.SetStateAction<string | undefined>>;
+}) {
+  const { apiRequest } = useContext(AppContext);
 
   const [value, setValue] = useState("");
 
-  useEffect(() => {
-    ApiRequest("GET", "/core/prefix", {
-      cb: (data) => {
-        if ("prefix" in data) {
-          dispatch({ type: "set", value: { prefix: data.prefix } });
-        } else {
-          dispatch({ type: "set", value: { prefix: null } });
-        }
-      },
-    });
-  }, [value]);
-
   const saveValue = () => {
-    ApiRequest("POST", "/core/prefix", {
+    apiRequest("POST", "/core/prefix", {
       params: { prefix: value },
       cb: () => {
-        dispatch({ type: "set", value: { prefix: value } });
+        setPrefix(value);
       },
     });
   };
 
-  return prefix === null ? (
+  return (
     <Container className="d-flex align-items-center justify-content-center flex-row min-vh-100">
       <Card>
         <Card.Header>Select prefix</Card.Header>
@@ -76,8 +63,6 @@ function SetPrefix() {
         </Card.Body>
       </Card>
     </Container>
-  ) : (
-    <div>FETCHING PREFIX...</div>
   );
 }
 

@@ -1,20 +1,34 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context";
-import ApiRequest from "../helpers/request";
 import AppLayout from "./app-layout";
 import { C_Event } from "@dogma-project/constants-meta";
 import InitLayout from "./init-layout";
+import { SSE_PATH } from "../const";
 
 function ServicesManager() {
   const {
     state: { services },
     dispatch,
+    apiRequest,
   } = useContext(AppContext);
+
+  useEffect(() => {
+    const evtSource = new EventSource(SSE_PATH);
+    evtSource.onmessage = (e) => {
+      const parsed = JSON.parse(e.data);
+      switch (parsed.type) {
+        case "services":
+          console.log(parsed);
+          dispatch({ type: "set", value: { services: parsed.payload } });
+          break;
+      }
+    };
+  }, []);
 
   const [stage, setStage] = useState(0);
 
   useEffect(() => {
-    ApiRequest("GET", "/services", {
+    apiRequest("GET", "/services", {
       cb: (data) => {
         dispatch({
           type: "set",

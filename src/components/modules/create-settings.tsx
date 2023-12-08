@@ -1,9 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Button from "react-bootstrap/esm/Button";
 import Card from "react-bootstrap/esm/Card";
 import Col from "react-bootstrap/esm/Col";
 import Form from "react-bootstrap/esm/Form";
-import ApiRequest from "../../helpers/request";
 import {
   C_Connection,
   C_Event,
@@ -11,8 +10,11 @@ import {
 } from "@dogma-project/constants-meta";
 import Row from "react-bootstrap/esm/Row";
 import FloatingLabel from "react-bootstrap/esm/FloatingLabel";
+import { AppContext } from "../../context";
 
 function CreateSettings() {
+  const { apiRequest } = useContext(AppContext);
+
   const [router, setRouter] = useState(C_Defaults.router);
 
   const [dhtAnnounce, setDhtAnnounce] = useState(C_Connection.Group.friends);
@@ -37,7 +39,7 @@ function CreateSettings() {
       [C_Event.Type.configAutoDefine]: autoDefine,
       [C_Event.Type.configExternal]: autoDefine ? external : "",
     };
-    ApiRequest("PUT", "/config", { params });
+    apiRequest("PUT", "/config", { params });
   };
 
   return (

@@ -5,7 +5,7 @@ import Navbar from "react-bootstrap/esm/Navbar";
 function AppHeader({ disabled }: { disabled?: boolean }) {
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
-      <Navbar.Brand>Dogma Meta (Headless)</Navbar.Brand>
+      <Navbar.Brand>Dogma Meta</Navbar.Brand>
       {!disabled && (
         <>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -13,18 +13,27 @@ function AppHeader({ disabled }: { disabled?: boolean }) {
             <Nav className="me-auto justify-content-right">
               <Nav.Link href="#/">Home</Nav.Link>
               <Nav.Link href="#/network">Network</Nav.Link>
-              <Nav.Link href="#/services">Services</Nav.Link>
-              <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">
-                  Another action
+              <Nav.Link disabled href="#/storage">
+                Storage
+              </Nav.Link>
+              <Nav.Link disabled href="#/mail">
+                Mail
+              </Nav.Link>
+              <Nav.Link disabled href="#/me">
+                User
+              </Nav.Link>
+              <NavDropdown title="App" id="basic-nav-dropdown">
+                <NavDropdown.Item href="#/settings">Settings</NavDropdown.Item>
+                <NavDropdown.Item href="#/services">Services</NavDropdown.Item>
+                <NavDropdown.Item disabled href="#/dht">
+                  DHT
                 </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">
-                  Something
+                <NavDropdown.Item disabled href="/#test">
+                  Another link
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">
-                  Separated link
+                <NavDropdown.Item href="#/about">
+                  About Dogma Meta
                 </NavDropdown.Item>
               </NavDropdown>
             </Nav>

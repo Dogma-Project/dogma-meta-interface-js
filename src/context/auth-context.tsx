@@ -1,10 +1,6 @@
 import { createContext, useReducer } from "react";
 
-const defaultAuthState: {
-  prefix: string | null | undefined;
-} = {
-  prefix: undefined,
-};
+const defaultAuthState: object = {};
 
 type action = {
   type: string;

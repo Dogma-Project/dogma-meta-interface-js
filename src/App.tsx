@@ -1,15 +1,14 @@
-import { useContext } from "react";
-import { AuthContextProvider, AuthContext } from "./context";
+import { AuthContextProvider, AppContextProvider } from "./context";
 import Page from "./components/page";
+import Loader from "./components/loader";
 
 function App() {
-  const {
-    state: { prefix },
-  } = useContext(AuthContext);
-  console.log("P", prefix);
   return (
     <AuthContextProvider>
-      <Page></Page>
+      <AppContextProvider>
+        <Loader></Loader>
+        <Page></Page>
+      </AppContextProvider>
     </AuthContextProvider>
   );
 }

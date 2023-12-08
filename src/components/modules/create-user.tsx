@@ -1,17 +1,20 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Button from "react-bootstrap/esm/Button";
 import Card from "react-bootstrap/esm/Card";
 import Col from "react-bootstrap/esm/Col";
 import Form from "react-bootstrap/esm/Form";
-import ApiRequest from "../../helpers/request";
+
 import { C_Keys, C_Defaults } from "@dogma-project/constants-meta";
+import { AppContext } from "../../context";
 
 function CreateUser() {
+  const { apiRequest } = useContext(AppContext);
+
   const [keyLength, setKeyLength] = useState(4096); // edit
   const [userName, setUserName] = useState(C_Defaults.userName);
 
   const saveValue = () => {
-    ApiRequest("POST", "/keys", {
+    apiRequest("POST", "/keys", {
       params: {
         name: userName,
         length: keyLength,
