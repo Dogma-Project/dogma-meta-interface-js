@@ -4,11 +4,11 @@ import Card from "react-bootstrap/esm/Card";
 import Col from "react-bootstrap/esm/Col";
 import Form from "react-bootstrap/esm/Form";
 import ApiRequest from "../../helpers/request";
-import { C_Keys } from "@dogma-project/constants-meta";
+import { C_Keys, C_Defaults } from "@dogma-project/constants-meta";
 
 function CreateNode() {
-  const [keyLength, setKeyLength] = useState(2048);
-  const [nodeName, setNodeName] = useState("Dogma Node");
+  const [keyLength, setKeyLength] = useState(2048); // edit // add to constants
+  const [nodeName, setNodeName] = useState(C_Defaults.nodeName);
 
   const saveValue = () => {
     ApiRequest("POST", "/keys", {

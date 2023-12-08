@@ -4,11 +4,11 @@ import Card from "react-bootstrap/esm/Card";
 import Col from "react-bootstrap/esm/Col";
 import Form from "react-bootstrap/esm/Form";
 import ApiRequest from "../../helpers/request";
-import { C_Keys } from "@dogma-project/constants-meta";
+import { C_Keys, C_Defaults } from "@dogma-project/constants-meta";
 
 function CreateUser() {
-  const [keyLength, setKeyLength] = useState(4096);
-  const [userName, setUserName] = useState("Dogma User");
+  const [keyLength, setKeyLength] = useState(4096); // edit
+  const [userName, setUserName] = useState(C_Defaults.userName);
 
   const saveValue = () => {
     ApiRequest("POST", "/keys", {

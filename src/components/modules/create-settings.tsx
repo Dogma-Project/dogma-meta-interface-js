@@ -4,20 +4,26 @@ import Card from "react-bootstrap/esm/Card";
 import Col from "react-bootstrap/esm/Col";
 import Form from "react-bootstrap/esm/Form";
 import ApiRequest from "../../helpers/request";
-import { C_Connection, C_Event } from "@dogma-project/constants-meta";
+import {
+  C_Connection,
+  C_Event,
+  C_Defaults,
+} from "@dogma-project/constants-meta";
 import Row from "react-bootstrap/esm/Row";
 import FloatingLabel from "react-bootstrap/esm/FloatingLabel";
 
 function CreateSettings() {
-  const [router, setRouter] = useState(24601); //edit
+  const [router, setRouter] = useState(C_Defaults.router);
 
   const [dhtAnnounce, setDhtAnnounce] = useState(C_Connection.Group.friends);
   const [dhtLookup, setDhtLookup] = useState(C_Connection.Group.friends);
   const [dhtBootstrap, setDhtBootstrap] = useState(C_Connection.Group.friends);
 
-  const [localDiscovery, setLocalDiscovery] = useState(true);
-  const [autoDefine, setAutoDefine] = useState(true);
-  const [external, setExternal] = useState("service1\nservice2\nservice3");
+  const [localDiscovery, setLocalDiscovery] = useState(
+    C_Defaults.localDiscovery
+  );
+  const [autoDefine, setAutoDefine] = useState(C_Defaults.autoDefineIp);
+  const [external, setExternal] = useState(C_Defaults.external);
 
   const saveValue = () => {
     const params: {
