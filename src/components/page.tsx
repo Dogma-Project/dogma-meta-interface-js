@@ -1,5 +1,4 @@
 import { useState, useEffect, useContext } from "react";
-import Container from "react-bootstrap/Container";
 import { AppContext } from "../context";
 import SetPrefix from "./set-prefix";
 import ServicesManager from "./services-manager";
@@ -21,13 +20,13 @@ function Page() {
   }, []);
 
   return (
-    <Container fluid>
+    <>
       {!prefix ? (
         <SetPrefix setPrefix={setPrefix}></SetPrefix>
       ) : (
         <ServicesManager></ServicesManager>
       )}
-    </Container>
+    </>
   );
 }
 

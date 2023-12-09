@@ -1,16 +1,77 @@
-import AppHeader from "./header";
+import { useState } from "react";
 import { RouterProvider } from "react-router-dom";
 import router from "./router";
-import { Container } from "react-bootstrap";
+
+import AppHeader from "./header";
+import LeftMenu from "./left-menu";
+
+import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
+import Toolbar from "@mui/material/Toolbar";
 
 function AppLayout() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
   return (
-    <>
-      <AppHeader></AppHeader>
-      <Container className="card my-3 p-3">
-        <RouterProvider router={router} />
-      </Container>
-    </>
+    <Box>
+      <AppHeader handleDrawerToggle={handleDrawerToggle}></AppHeader>
+      <Toolbar></Toolbar>
+      <Box sx={{ display: "flex" }}>
+        <Box
+          component="nav"
+          sx={{
+            flexShrink: 0,
+          }}
+          aria-label="mailbox folders"
+        >
+          <Drawer
+            variant="temporary"
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            ModalProps={{
+              keepMounted: true, // Better open performance on mobile.
+            }}
+            sx={{
+              display: { xs: "block", sm: "none" },
+              "& .MuiDrawer-paper": {
+                boxSizing: "border-box",
+                width: "300px",
+              },
+            }}
+          >
+            <LeftMenu></LeftMenu>
+          </Drawer>
+          <Drawer
+            variant="permanent"
+            sx={{
+              display: { xs: "none", sm: "block" },
+              "& .MuiDrawer-paper": {
+                boxSizing: "border-box",
+                width: "300px",
+                position: "relative",
+              },
+            }}
+            open
+          >
+            <LeftMenu></LeftMenu>
+          </Drawer>
+        </Box>
+
+        <Box
+          component="main"
+          sx={{
+            flexGrow: 1,
+            p: 3,
+          }}
+        >
+          <RouterProvider router={router} />
+        </Box>
+      </Box>
+    </Box>
   );
 }
 

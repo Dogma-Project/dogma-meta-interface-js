@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context";
 import AppLayout from "./app-layout";
-import { C_Event } from "@dogma-project/constants-meta";
 import InitLayout from "./init-layout";
+import { C_Event } from "@dogma-project/constants-meta";
 import { SSE_PATH } from "../const";
 
 function ServicesManager() {

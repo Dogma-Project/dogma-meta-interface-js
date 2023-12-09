@@ -1,11 +1,18 @@
 import { useContext, useState } from "react";
-import Button from "react-bootstrap/esm/Button";
-import Card from "react-bootstrap/esm/Card";
-import Col from "react-bootstrap/esm/Col";
-import Form from "react-bootstrap/esm/Form";
-
 import { C_Keys, C_Defaults } from "@dogma-project/constants-meta";
+
 import { AppContext } from "../../context";
+
+import Container from "@mui/material/Container";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import CardActions from "@mui/material/CardActions";
+import Button from "@mui/material/Button";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import NativeSelect from "@mui/material/NativeSelect";
 
 function CreateUser() {
   const { apiRequest } = useContext(AppContext);
@@ -24,51 +31,62 @@ function CreateUser() {
   };
 
   return (
-    <Card>
-      <Card.Header>Create User Key</Card.Header>
-      <Card.Body>
-        <Card.Title>User key is your login and main identity.</Card.Title>
-        <Card.Text>
-          A pair of RSA private and pubic keys, which is your main identifier as
-          an user of network. SHA256 Fingerprint of a public user key used as
-          your User ID. When someone adds friend's user_id, he automatically
-          allows all connections from nodes, associated with User Key. User key
-          is just one for all your nodes (devices) and you should keep it as a
-          proof of your identity. Closest analog in centralized networks is
-          login+password credentials.
-        </Card.Text>
+    <Container className="d-flex align-items-center justify-content-center flex-row min-vh-100">
+      <Card>
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+            Create User Key
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            A pair of RSA private and pubic keys, which is your main identifier
+            as an user of network. SHA256 Fingerprint of a public user key used
+            as your User ID. When someone adds friend's user_id, he
+            automatically allows all connections from nodes, associated with
+            User Key. User key is just one for all your nodes (devices) and you
+            should keep it as a proof of your identity. Closest analog in
+            centralized networks is login+password credentials.
+          </Typography>
 
-        <Form.FloatingLabel label="User Name (Nickname)" className="mb-3">
-          <Form.Control
-            type="text"
-            placeholder=" "
+          <TextField
+            fullWidth
+            id="standard-basic"
+            label="Set prefix"
+            variant="standard"
             value={userName}
             onChange={(e) => setUserName(e.target.value)}
+            sx={{
+              my: 3,
+            }}
           />
-        </Form.FloatingLabel>
 
-        <Form.FloatingLabel label="Set User Key length">
-          <Form.Select
-            value={keyLength}
-            onChange={(e) => setKeyLength(Number(e.target.value))}
-          >
-            <option value={2048}>2048 bits</option>
-            <option value={4096}>4096 bits (recommended)</option>
-          </Form.Select>
-        </Form.FloatingLabel>
-
-        <Col className="my-3">
-          <Button
-            variant="primary"
-            className="mx-3"
-            onClick={saveValue}
-            disabled={userName.length < 3}
-          >
+          <FormControl fullWidth>
+            <InputLabel variant="standard" htmlFor="uncontrolled-native">
+              Set User Key length
+            </InputLabel>
+            <NativeSelect
+              value={keyLength}
+              onChange={(e) => setKeyLength(Number(e.target.value))}
+              inputProps={{
+                name: "age",
+                id: "uncontrolled-native",
+              }}
+              sx={{
+                my: 3,
+              }}
+            >
+              <option value={2048}>2048 bits</option>
+              <option value={4096}>4096 bits (recommended)</option>
+            </NativeSelect>
+          </FormControl>
+        </CardContent>
+        <CardActions>
+          <Button onClick={saveValue} disabled={userName.length < 3}>
             Next
           </Button>
-        </Col>
-      </Card.Body>
-    </Card>
+          <Button disabled>Exit</Button>
+        </CardActions>
+      </Card>
+    </Container>
   );
 }
 

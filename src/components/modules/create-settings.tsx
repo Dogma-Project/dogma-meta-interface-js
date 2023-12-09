@@ -1,16 +1,24 @@
 import { useContext, useState } from "react";
-import Button from "react-bootstrap/esm/Button";
-import Card from "react-bootstrap/esm/Card";
-import Col from "react-bootstrap/esm/Col";
-import Form from "react-bootstrap/esm/Form";
 import {
   C_Connection,
   C_Event,
   C_Defaults,
 } from "@dogma-project/constants-meta";
-import Row from "react-bootstrap/esm/Row";
-import FloatingLabel from "react-bootstrap/esm/FloatingLabel";
+
 import { AppContext } from "../../context";
+import Container from "@mui/material/Container";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import NativeSelect from "@mui/material/NativeSelect";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Switch from "@mui/material/Switch";
+import TextField from "@mui/material/TextField";
+import CardActions from "@mui/material/CardActions";
+import Button from "@mui/material/Button";
 
 function CreateSettings() {
   const { apiRequest } = useContext(AppContext);
@@ -43,119 +51,170 @@ function CreateSettings() {
   };
 
   return (
-    <Card className="my-5">
-      <Card.Header>Initial settings</Card.Header>
-      <Card.Body>
-        <Card.Title className="mb-3">
-          Specify initial settings for your node. You can change them later.
-        </Card.Title>
+    <Container className="d-flex align-items-center justify-content-center flex-row min-vh-100">
+      <Card>
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+            Initial settings
+          </Typography>
 
-        <Form.Label title="Router port is ...">Router Port</Form.Label>
-        <Form.Range
-          value={Math.round((router / 65536) * 100)}
-          onChange={(e) => {
-            const { value } = e.target;
-            setRouter(Math.round((Number(value) / 100) * 65536));
-          }}
-        />
-        <Form.FloatingLabel label="Router port (1024~65536)" className="mb-3">
-          <Form.Control
-            type="text"
-            placeholder=" "
+          <TextField
+            fullWidth
+            id="standard-basic"
+            label="Router port "
+            variant="standard"
+            type="number"
             value={router}
-            onChange={(e) => setRouter(Number(e.target.value) || 0)}
+            onChange={(e) => setRouter(Number(e.target.value))}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            sx={{
+              my: 3,
+            }}
           />
-        </Form.FloatingLabel>
 
-        <Row className="mb-3">
-          <Form.Label title="DHT is ...">DHT</Form.Label>
-          <Col>
-            <FloatingLabel controlId="floatingSelect1" label="DHT announce">
-              <Form.Select
-                value={dhtAnnounce}
-                onChange={(e) => setDhtAnnounce(Number(e.target.value))}
-              >
-                <option value={C_Connection.Group.all}>All</option>
-                <option value={C_Connection.Group.friends}>Friends</option>
-                <option value={C_Connection.Group.selfUser}>Self nodes</option>
-                <option value={C_Connection.Group.nobody}>Nobody</option>
-              </Form.Select>
-            </FloatingLabel>
-          </Col>
-          <Col>
-            <FloatingLabel controlId="floatingSelect2" label="DHT lookup">
-              <Form.Select
-                value={dhtLookup}
-                onChange={(e) => setDhtLookup(Number(e.target.value))}
-              >
-                <option value={C_Connection.Group.all}>All</option>
-                <option value={C_Connection.Group.friends}>Friends</option>
-                <option value={C_Connection.Group.selfUser}>Self nodes</option>
-                <option value={C_Connection.Group.nobody}>Nobody</option>
-              </Form.Select>
-            </FloatingLabel>
-          </Col>
-          <Col>
-            <FloatingLabel controlId="floatingSelect3" label="DHT bootstrap">
-              <Form.Select
-                value={dhtBootstrap}
-                onChange={(e) => setDhtBootstrap(Number(e.target.value))}
-              >
-                <option value={C_Connection.Group.all}>All</option>
-                <option value={C_Connection.Group.friends}>Friends</option>
-                <option value={C_Connection.Group.selfUser}>Self nodes</option>
-                <option value={C_Connection.Group.nobody}>Nobody</option>
-              </Form.Select>
-            </FloatingLabel>
-          </Col>
-        </Row>
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={4}>
+              <FormControl fullWidth>
+                <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                  DHT announce
+                </InputLabel>
+                <NativeSelect
+                  value={dhtAnnounce}
+                  onChange={(e) => setDhtAnnounce(Number(e.target.value))}
+                  inputProps={{
+                    name: "age",
+                    id: "uncontrolled-native",
+                  }}
+                  sx={{
+                    my: 3,
+                  }}
+                >
+                  <option value={C_Connection.Group.all}>All</option>
+                  <option value={C_Connection.Group.friends}>Friends</option>
+                  <option value={C_Connection.Group.selfUser}>
+                    Self nodes
+                  </option>
+                  <option value={C_Connection.Group.nobody}>Nobody</option>
+                </NativeSelect>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <FormControl fullWidth>
+                <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                  DHT lookup
+                </InputLabel>
+                <NativeSelect
+                  value={dhtLookup}
+                  onChange={(e) => setDhtLookup(Number(e.target.value))}
+                  inputProps={{
+                    name: "age",
+                    id: "uncontrolled-native",
+                  }}
+                  sx={{
+                    my: 3,
+                  }}
+                >
+                  <option value={C_Connection.Group.all}>All</option>
+                  <option value={C_Connection.Group.friends}>Friends</option>
+                  <option value={C_Connection.Group.selfUser}>
+                    Self nodes
+                  </option>
+                  <option value={C_Connection.Group.nobody}>Nobody</option>
+                </NativeSelect>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <FormControl fullWidth>
+                <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                  DHT bootstrap
+                </InputLabel>
+                <NativeSelect
+                  value={dhtBootstrap}
+                  onChange={(e) => setDhtBootstrap(Number(e.target.value))}
+                  inputProps={{
+                    name: "age",
+                    id: "uncontrolled-native",
+                  }}
+                  sx={{
+                    my: 3,
+                  }}
+                >
+                  <option value={C_Connection.Group.all}>All</option>
+                  <option value={C_Connection.Group.friends}>Friends</option>
+                  <option value={C_Connection.Group.selfUser}>
+                    Self nodes
+                  </option>
+                  <option value={C_Connection.Group.nobody}>Nobody</option>
+                </NativeSelect>
+              </FormControl>
+            </Grid>
+          </Grid>
 
-        <Row className="mb-3">
-          <Form.Label>Network</Form.Label>
-          <Col>
-            <Form.Check
-              type="switch"
-              id="custom-switch"
-              label="Local discovery"
-              checked={localDiscovery}
-              onChange={(e) => setLocalDiscovery(e.target.checked)}
-            />
-          </Col>
-          <Col>
-            <Form.Check
-              type="switch"
-              id="custom-switch"
-              label="External define IP"
-              checked={autoDefine}
-              onChange={(e) => setAutoDefine(e.target.checked)}
-            />
-          </Col>
-        </Row>
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={6}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={localDiscovery}
+                    onChange={(e) => setLocalDiscovery(e.target.checked)}
+                  />
+                }
+                sx={{
+                  my: 1,
+                }}
+                label="Local discovery"
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={autoDefine}
+                    onChange={(e) => setAutoDefine(e.target.checked)}
+                  />
+                }
+                sx={{
+                  my: 1,
+                }}
+                label="Auto define IP"
+              />
+            </Grid>
+          </Grid>
 
-        {autoDefine && (
-          <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-            <Form.Label>External services</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={3}
+          {autoDefine && (
+            <TextField
+              id="outlined-basic"
+              label="External IP check services"
+              variant="outlined"
               value={external}
+              multiline
+              fullWidth
+              minRows={3}
+              sx={{
+                my: 3,
+              }}
               onChange={(e) => setExternal(e.target.value)}
             />
-          </Form.Group>
-        )}
-
-        <Col>
+          )}
+        </CardContent>
+        <CardActions
+          sx={{
+            display: "flex",
+            justifyContent: "right",
+          }}
+        >
           <Button
-            variant="primary"
-            className="mx-3"
             onClick={saveValue}
             disabled={router < 1024 || router > 65536}
           >
             Next
           </Button>
-        </Col>
-      </Card.Body>
-    </Card>
+          <Button disabled>Exit</Button>
+        </CardActions>
+      </Card>
+    </Container>
   );
 }
 

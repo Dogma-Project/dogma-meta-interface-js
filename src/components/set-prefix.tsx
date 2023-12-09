@@ -1,10 +1,12 @@
 import { useState, useContext } from "react";
-import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Container";
-import Col from "react-bootstrap/Col";
-import Form from "react-bootstrap/Form";
 import { AppContext } from "../context";
+import Container from "@mui/material/Container";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import CardActions from "@mui/material/CardActions";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 
 function SetPrefix({
   setPrefix,
@@ -27,40 +29,34 @@ function SetPrefix({
   return (
     <Container className="d-flex align-items-center justify-content-center flex-row min-vh-100">
       <Card>
-        <Card.Header>Select prefix</Card.Header>
-        <Card.Body>
-          {/* <Card.Title>Please, choose prefix to start app.</Card.Title> */}
-          {/* <Card.Text>
-            With supporting text below as a natural lead-in to additional
-            content.
-          </Card.Text> */}
-
-          <Form.Label htmlFor="prefixField">
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
             Please, choose prefix to start app.
-          </Form.Label>
-          <Form.Control
-            type="text"
-            id="prefixField"
-            aria-describedby="passwordHelpBlock"
-            placeholder="For example: default"
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat. Duis aute irure dolor in
+            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+            culpa qui officia deserunt mollit anim id est laborum.
+          </Typography>
+          <TextField
+            id="standard-basic"
+            label="Set prefix"
+            variant="standard"
             onChange={(e) => setValue(e.target.value)}
           />
-          {/* <Form.Text id="passwordHelpBlock" muted>
-            Your password must be 8-20 characters long, contain letters and
-            numbers, and must not contain spaces, special characters, or emoji.
-          </Form.Text> */}
-
-          <Col className="my-3">
-            <Button
-              variant="primary"
-              className="mx-3"
-              onClick={saveValue}
-              disabled={value.length < 3}
-            >
-              Next
-            </Button>
-          </Col>
-        </Card.Body>
+        </CardContent>
+        <CardActions>
+          <Button size="small" onClick={saveValue} disabled={value.length < 3}>
+            Next
+          </Button>
+          <Button size="small" disabled>
+            Exit
+          </Button>
+        </CardActions>
       </Card>
     </Container>
   );

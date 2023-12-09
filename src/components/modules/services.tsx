@@ -1,22 +1,31 @@
 import { useContext } from "react";
 import { AppContext } from "../../context";
-import ListGroup from "react-bootstrap/esm/ListGroup";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import IconButton from "@mui/material/IconButton";
+import ListItemText from "@mui/material/ListItemText";
+import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
 
 function Services() {
   const { state } = useContext(AppContext);
 
   return (
     <>
-      <h3>Services state</h3>
-      <ListGroup>
-        {state.services.map((item) => {
-          return (
-            <ListGroup.Item>
-              {item.service} : {item.state}
-            </ListGroup.Item>
-          );
-        })}
-      </ListGroup>
+      <List>
+        {state.services.map((service) => (
+          <ListItem
+            key={service.service}
+            disableGutters
+            secondaryAction={
+              <IconButton aria-label="comment">
+                <HelpRoundedIcon />
+              </IconButton>
+            }
+          >
+            <ListItemText primary={service.service + ":" + service.state} />
+          </ListItem>
+        ))}
+      </List>
     </>
   );
 }

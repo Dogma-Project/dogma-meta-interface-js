@@ -13,7 +13,7 @@ class AppState {
     service: C_Event.Type.Service;
     state: C_System.States;
   }[] = [];
-  busy: boolean = false;
+  busy: boolean = true;
 }
 
 type action = {
