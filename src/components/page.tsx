@@ -1,32 +1,28 @@
-import { useState, useEffect, useContext } from "react";
-import { AppContext } from "../context";
 import SetPrefix from "./set-prefix";
 import ServicesManager from "./services-manager";
+import { useContext } from "react";
+import { AppContext } from "../context/app-context";
+import { WebsocketProvider } from "../context/ws-context";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { darkTheme } from "../themes/dark";
 
 function Page() {
-  const [prefix, setPrefix] = useState<string | undefined>();
+  const {
+    state: { prefix },
+  } = useContext(AppContext);
 
-  const { apiRequest } = useContext(AppContext);
-
-  useEffect(() => {
-    console.log("PRE", prefix, new Date());
-    apiRequest("GET", "/core/prefix", {
-      cb: (data) => {
-        if ("prefix" in data) {
-          setPrefix(data.prefix as string);
-        }
-      },
-    });
-  }, []);
+  const theme = createTheme(darkTheme);
 
   return (
-    <>
-      {!prefix ? (
-        <SetPrefix setPrefix={setPrefix}></SetPrefix>
-      ) : (
-        <ServicesManager></ServicesManager>
-      )}
-    </>
+    <WebsocketProvider prefix={prefix}>
+      <ThemeProvider theme={theme}>
+        {!prefix ? (
+          <SetPrefix></SetPrefix>
+        ) : (
+          <ServicesManager></ServicesManager>
+        )}
+      </ThemeProvider>
+    </WebsocketProvider>
   );
 }
 

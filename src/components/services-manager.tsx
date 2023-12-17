@@ -2,49 +2,53 @@ import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context";
 import AppLayout from "./app-layout";
 import InitLayout from "./init-layout";
-import { C_Event } from "@dogma-project/constants-meta";
-import { SSE_PATH } from "../const";
+import { C_API, C_Event } from "@dogma-project/constants-meta";
+import { WebsocketContext } from "../context/ws-context";
 
 function ServicesManager() {
   const {
     state: { services },
     dispatch,
-    apiRequest,
   } = useContext(AppContext);
-
-  useEffect(() => {
-    const evtSource = new EventSource(SSE_PATH);
-    evtSource.onmessage = (e) => {
-      const parsed = JSON.parse(e.data);
-      switch (parsed.type) {
-        case "services":
-          console.log(parsed);
-          dispatch({ type: "set", value: { services: parsed.payload } });
-          break;
-      }
-    };
-  }, []);
+  const { isReady, value, send } = useContext(WebsocketContext);
 
   const [stage, setStage] = useState(0);
 
   useEffect(() => {
-    apiRequest("GET", "/services", {
-      cb: (data) => {
-        dispatch({
-          type: "set",
-          value: {
-            services: data,
-          },
-        });
-      },
-    });
-  }, []);
+    if (isReady) {
+      send({
+        type: C_API.ApiRequestType.services,
+        action: C_API.ApiRequestAction.get,
+      });
+      dispatch({
+        type: C_API.ApiRequestAction.set,
+        value: {
+          busy: false,
+        },
+      });
+    } else {
+      dispatch({
+        type: C_API.ApiRequestAction.set,
+        value: {
+          busy: true,
+        },
+      });
+    }
+  }, [isReady]);
+
+  useEffect(() => {
+    if (value && value.type === C_API.ApiRequestType.services) {
+      dispatch({
+        type: C_API.ApiRequestAction.set, // edit
+        value: value.payload,
+      });
+    }
+  }, [value]);
 
   useEffect(() => {
     const user = services.find(
       (item) => item.service === C_Event.Type.storageUser
     );
-    console.log("USER", user);
     if (!user || user.state <= 2) {
       return setStage(1);
     }

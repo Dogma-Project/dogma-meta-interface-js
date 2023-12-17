@@ -1,34 +1,46 @@
 import { useContext, useState } from "react";
-import { C_Keys, C_Defaults } from "@dogma-project/constants-meta";
+import { C_Keys, C_Defaults, C_API } from "@dogma-project/constants-meta";
 
-import { AppContext } from "../../context";
+import { WebsocketContext } from "../../context";
 
 import Container from "@mui/material/Container";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import CardActions from "@mui/material/CardActions";
-import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
-import NativeSelect from "@mui/material/NativeSelect";
+import InitScreenActions from "./parts/init-screen-actions";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 
 function CreateNode() {
-  const { apiRequest } = useContext(AppContext);
-
+  const { isReady, send } = useContext(WebsocketContext);
   const [keyLength, setKeyLength] = useState(2048); // edit
   const [nodeName, setNodeName] = useState(C_Defaults.nodeName);
 
   const saveValue = () => {
-    apiRequest("POST", "/keys", {
-      params: {
-        name: nodeName,
-        length: keyLength,
-        type: C_Keys.Type.nodeKey,
-      },
-    });
+    if (isReady) {
+      send({
+        type: C_API.ApiRequestType.keys,
+        action: C_API.ApiRequestAction.set,
+        payload: {
+          name: nodeName,
+          length: keyLength,
+          type: C_Keys.Type.nodeKey,
+        },
+      });
+    } else {
+      console.warn("WS not ready");
+    }
   };
+
+  // useEffect(() => {
+  //   if (value && value.type === C_API.ApiRequestType.keys) {
+  //     console.log("KEYS", value);
+  //     // handle errors
+  //   }
+  // }, [value]);
 
   return (
     <Container className="d-flex align-items-center justify-content-center flex-row min-vh-100">
@@ -53,7 +65,7 @@ function CreateNode() {
             fullWidth
             id="standard-basic"
             label="Set prefix"
-            variant="standard"
+            variant="outlined"
             value={nodeName}
             onChange={(e) => setNodeName(e.target.value)}
             sx={{
@@ -62,10 +74,10 @@ function CreateNode() {
           />
 
           <FormControl fullWidth>
-            <InputLabel variant="standard" htmlFor="uncontrolled-native">
+            <InputLabel variant="outlined" htmlFor="uncontrolled-native">
               Set Node Key length
             </InputLabel>
-            <NativeSelect
+            <Select
               value={keyLength}
               onChange={(e) => setKeyLength(Number(e.target.value))}
               inputProps={{
@@ -76,18 +88,16 @@ function CreateNode() {
                 my: 3,
               }}
             >
-              <option value={1024}>1024 bits (not recommended)</option>
-              <option value={2048}>2048 bits (recommended)</option>
-              <option value={4096}>4096 bits (best choise)</option>
-            </NativeSelect>
+              <MenuItem value={1024}>1024 bits (not recommended)</MenuItem>
+              <MenuItem value={2048}>2048 bits (recommended)</MenuItem>
+              <MenuItem value={4096}>4096 bits (best choise)</MenuItem>
+            </Select>
           </FormControl>
         </CardContent>
-        <CardActions>
-          <Button onClick={saveValue} disabled={nodeName.length < 3}>
-            Next
-          </Button>
-          <Button disabled>Exit</Button>
-        </CardActions>
+        <InitScreenActions
+          onConfirm={saveValue}
+          confirmDisabled={nodeName.length < 3}
+        ></InitScreenActions>
       </Card>
     </Container>
   );

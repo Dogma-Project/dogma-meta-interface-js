@@ -3,25 +3,23 @@ import {
   C_Connection,
   C_Event,
   C_Defaults,
+  C_API,
 } from "@dogma-project/constants-meta";
 
-import { AppContext } from "../../context";
+import { WebsocketContext } from "../../context";
 import Container from "@mui/material/Container";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import NativeSelect from "@mui/material/NativeSelect";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
-import TextField from "@mui/material/TextField";
-import CardActions from "@mui/material/CardActions";
-import Button from "@mui/material/Button";
+import InitScreenActions from "./parts/init-screen-actions";
+import SettingsRouter from "./settings-parts/router";
+import SettingsDht from "./settings-parts/dht";
+import SettingsSwitch from "./settings-parts/switch";
+import SettingsExternal from "./settings-parts/external";
 
 function CreateSettings() {
-  const { apiRequest } = useContext(AppContext);
+  const { isReady, send } = useContext(WebsocketContext);
 
   const [router, setRouter] = useState(C_Defaults.router);
 
@@ -36,18 +34,26 @@ function CreateSettings() {
   const [external, setExternal] = useState(C_Defaults.external);
 
   const saveValue = () => {
-    const params: {
-      [key in C_Event.Type.Config]?: string | boolean | number;
-    } = {
-      [C_Event.Type.configRouter]: router,
-      [C_Event.Type.configDhtAnnounce]: dhtAnnounce,
-      [C_Event.Type.configDhtLookup]: dhtLookup,
-      [C_Event.Type.configDhtBootstrap]: dhtBootstrap,
-      [C_Event.Type.configLocalDiscovery]: localDiscovery,
-      [C_Event.Type.configAutoDefine]: autoDefine,
-      [C_Event.Type.configExternal]: autoDefine ? external : "",
-    };
-    apiRequest("PUT", "/config", { params });
+    if (isReady) {
+      const params: {
+        [key in C_Event.Type.Config]?: string | boolean | number;
+      } = {
+        [C_Event.Type.configRouter]: router,
+        [C_Event.Type.configDhtAnnounce]: dhtAnnounce,
+        [C_Event.Type.configDhtLookup]: dhtLookup,
+        [C_Event.Type.configDhtBootstrap]: dhtBootstrap,
+        [C_Event.Type.configLocalDiscovery]: localDiscovery,
+        [C_Event.Type.configAutoDefine]: autoDefine,
+        [C_Event.Type.configExternal]: autoDefine ? external : "",
+      };
+      send({
+        type: C_API.ApiRequestType.settings,
+        action: C_API.ApiRequestAction.set,
+        payload: params,
+      });
+    } else {
+      console.warn("offline");
+    }
   };
 
   return (
@@ -58,161 +64,64 @@ function CreateSettings() {
             Initial settings
           </Typography>
 
-          <TextField
-            fullWidth
-            id="standard-basic"
-            label="Router port "
-            variant="standard"
-            type="number"
-            value={router}
-            onChange={(e) => setRouter(Number(e.target.value))}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            sx={{
-              my: 3,
-            }}
-          />
+          <SettingsRouter
+            router={router}
+            setRouter={setRouter}
+          ></SettingsRouter>
 
           <Grid container spacing={2}>
             <Grid item xs={12} md={4}>
-              <FormControl fullWidth>
-                <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                  DHT announce
-                </InputLabel>
-                <NativeSelect
-                  value={dhtAnnounce}
-                  onChange={(e) => setDhtAnnounce(Number(e.target.value))}
-                  inputProps={{
-                    name: "age",
-                    id: "uncontrolled-native",
-                  }}
-                  sx={{
-                    my: 3,
-                  }}
-                >
-                  <option value={C_Connection.Group.all}>All</option>
-                  <option value={C_Connection.Group.friends}>Friends</option>
-                  <option value={C_Connection.Group.selfUser}>
-                    Self nodes
-                  </option>
-                  <option value={C_Connection.Group.nobody}>Nobody</option>
-                </NativeSelect>
-              </FormControl>
+              <SettingsDht
+                value={dhtAnnounce}
+                label="DHT Announce"
+                setter={setDhtAnnounce}
+              ></SettingsDht>
             </Grid>
             <Grid item xs={12} md={4}>
-              <FormControl fullWidth>
-                <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                  DHT lookup
-                </InputLabel>
-                <NativeSelect
-                  value={dhtLookup}
-                  onChange={(e) => setDhtLookup(Number(e.target.value))}
-                  inputProps={{
-                    name: "age",
-                    id: "uncontrolled-native",
-                  }}
-                  sx={{
-                    my: 3,
-                  }}
-                >
-                  <option value={C_Connection.Group.all}>All</option>
-                  <option value={C_Connection.Group.friends}>Friends</option>
-                  <option value={C_Connection.Group.selfUser}>
-                    Self nodes
-                  </option>
-                  <option value={C_Connection.Group.nobody}>Nobody</option>
-                </NativeSelect>
-              </FormControl>
+              <SettingsDht
+                value={dhtLookup}
+                label="DHT lookup"
+                setter={setDhtLookup}
+              ></SettingsDht>
             </Grid>
             <Grid item xs={12} md={4}>
-              <FormControl fullWidth>
-                <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                  DHT bootstrap
-                </InputLabel>
-                <NativeSelect
-                  value={dhtBootstrap}
-                  onChange={(e) => setDhtBootstrap(Number(e.target.value))}
-                  inputProps={{
-                    name: "age",
-                    id: "uncontrolled-native",
-                  }}
-                  sx={{
-                    my: 3,
-                  }}
-                >
-                  <option value={C_Connection.Group.all}>All</option>
-                  <option value={C_Connection.Group.friends}>Friends</option>
-                  <option value={C_Connection.Group.selfUser}>
-                    Self nodes
-                  </option>
-                  <option value={C_Connection.Group.nobody}>Nobody</option>
-                </NativeSelect>
-              </FormControl>
+              <SettingsDht
+                value={dhtBootstrap}
+                label="DHT bootstrap"
+                setter={setDhtBootstrap}
+              ></SettingsDht>
             </Grid>
           </Grid>
 
           <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={localDiscovery}
-                    onChange={(e) => setLocalDiscovery(e.target.checked)}
-                  />
-                }
-                sx={{
-                  my: 1,
-                }}
+              <SettingsSwitch
+                value={localDiscovery}
                 label="Local discovery"
-              />
+                setter={setLocalDiscovery}
+              ></SettingsSwitch>
             </Grid>
             <Grid item xs={12} md={6}>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={autoDefine}
-                    onChange={(e) => setAutoDefine(e.target.checked)}
-                  />
-                }
-                sx={{
-                  my: 1,
-                }}
+              <SettingsSwitch
+                value={autoDefine}
                 label="Auto define IP"
-              />
+                setter={setAutoDefine}
+              ></SettingsSwitch>
             </Grid>
           </Grid>
 
           {autoDefine && (
-            <TextField
-              id="outlined-basic"
-              label="External IP check services"
-              variant="outlined"
+            <SettingsExternal
+              setter={setExternal}
               value={external}
-              multiline
-              fullWidth
-              minRows={3}
-              sx={{
-                my: 3,
-              }}
-              onChange={(e) => setExternal(e.target.value)}
-            />
+              label="External IP check services"
+            ></SettingsExternal>
           )}
         </CardContent>
-        <CardActions
-          sx={{
-            display: "flex",
-            justifyContent: "right",
-          }}
-        >
-          <Button
-            onClick={saveValue}
-            disabled={router < 1024 || router > 65536}
-          >
-            Next
-          </Button>
-          <Button disabled>Exit</Button>
-        </CardActions>
+        <InitScreenActions
+          onConfirm={saveValue}
+          confirmDisabled={router < 1024 || router > 65536}
+        ></InitScreenActions>
       </Card>
     </Container>
   );
