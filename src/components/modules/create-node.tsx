@@ -35,13 +35,6 @@ function CreateNode() {
     }
   };
 
-  // useEffect(() => {
-  //   if (value && value.type === C_API.ApiRequestType.keys) {
-  //     console.log("KEYS", value);
-  //     // handle errors
-  //   }
-  // }, [value]);
-
   return (
     <Container className="d-flex align-items-center justify-content-center flex-row min-vh-100">
       <Card>

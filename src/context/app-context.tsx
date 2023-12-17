@@ -40,7 +40,9 @@ export const AppContextProvider = (props: { children: React.ReactNode }) => {
         return { ...state, ...action.value };
       }
       default: {
-        throw Error("Unknown action: " + action.type);
+        console.log("reducer", "unknown type");
+        return state;
+        // throw Error("Unknown action: " + action.type);
       }
     }
   };

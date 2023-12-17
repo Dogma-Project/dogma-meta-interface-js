@@ -37,11 +37,16 @@ function ServicesManager() {
   }, [isReady]);
 
   useEffect(() => {
-    if (value && value.type === C_API.ApiRequestType.services) {
-      dispatch({
-        type: C_API.ApiRequestAction.set, // edit
-        value: value.payload,
-      });
+    if (value) {
+      switch (value.type) {
+        case C_API.ApiRequestType.services:
+        case C_API.ApiRequestType.network:
+          dispatch({
+            type: value.action as C_API.ApiRequestAction,
+            value: value.payload,
+          });
+          break;
+      }
     }
   }, [value]);
 

@@ -14,13 +14,15 @@ import PersonAddAltRoundedIcon from "@mui/icons-material/PersonAddAltRounded";
 import QuestionMarkRoundedIcon from "@mui/icons-material/QuestionMarkRounded";
 import DoDisturbOffRoundedIcon from "@mui/icons-material/DoDisturbOffRounded";
 import DoNotDisturbOnTotalSilenceRoundedIcon from "@mui/icons-material/DoNotDisturbOnTotalSilenceRounded";
+import StarsRoundedIcon from "@mui/icons-material/StarsRounded";
+import ComputerRoundedIcon from "@mui/icons-material/ComputerRounded";
+import RadioButtonCheckedRoundedIcon from "@mui/icons-material/RadioButtonCheckedRounded";
 
 function Network() {
   const {
     state: { network },
-    dispatch,
   } = useContext(AppContext);
-  const { isReady, value, send } = useContext(WebsocketContext);
+  const { isReady, send } = useContext(WebsocketContext);
 
   const [expanded, setExpanded] = useState<string | false>(false);
 
@@ -38,15 +40,6 @@ function Network() {
     }
   }, [isReady]);
 
-  useEffect(() => {
-    if (value && value.type === C_API.ApiRequestType.network) {
-      dispatch({
-        type: C_API.ApiRequestAction.set,
-        value: value.payload,
-      });
-    }
-  }, [value]);
-
   return (
     <>
       {network.map((user, i) => {
@@ -62,8 +55,13 @@ function Network() {
               id="panel3bh-header"
             >
               <Stack direction="row" alignItems="center" gap={1}>
-                {user.current && <AccountCircleRoundedIcon color="info" />}
-                {user.requested && <QuestionMarkRoundedIcon color="warning" />}
+                {user.current ? (
+                  <StarsRoundedIcon color="success" />
+                ) : user.requested ? (
+                  <QuestionMarkRoundedIcon color="warning" />
+                ) : (
+                  <AccountCircleRoundedIcon color="info" />
+                )}
                 <Typography sx={{ flexGrow: 1 }}>{user.name}</Typography>
               </Stack>
             </AccordionSummary>
@@ -87,11 +85,21 @@ function Network() {
               user.nodes.map((node, j) => {
                 return (
                   <AccordionDetails key={`nodebox-${i}-${j}`}>
-                    <Stack direction="row" alignItems="center" gap={1}>
-                      {node.current && (
-                        <AccountCircleRoundedIcon color="info" />
+                    <Stack
+                      direction="row"
+                      alignItems="center"
+                      gap={1}
+                      sx={{ mx: 2, display: "flex" }}
+                    >
+                      {node.current ? (
+                        <StarsRoundedIcon color="success" />
+                      ) : (
+                        <ComputerRoundedIcon color="info" />
                       )}
-                      <Typography>{node.name}</Typography>
+                      <Typography sx={{ flexGrow: 1 }}>{node.name}</Typography>
+                      {node.online && (
+                        <RadioButtonCheckedRoundedIcon color="success" />
+                      )}
                     </Stack>
                   </AccordionDetails>
                 );
