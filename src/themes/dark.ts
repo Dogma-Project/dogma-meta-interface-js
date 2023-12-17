@@ -1,6 +1,16 @@
 import { ThemeOptions } from "@mui/material/styles";
 
 export const darkTheme: ThemeOptions = {
+  components: {
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          wordBreak: "break-word",
+          wordWrap: "break-word",
+        },
+      },
+    },
+  },
   palette: {
     mode: "dark",
     primary: {

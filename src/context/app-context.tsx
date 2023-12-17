@@ -1,6 +1,6 @@
 import { createContext, useReducer } from "react";
 import { C_API, C_Event, C_System } from "@dogma-project/constants-meta";
-import { API } from "@dogma-project/core-meta/types/types";
+import { API, User, Node } from "@dogma-project/core-meta/types/types";
 
 class AppState {
   prefix: string = "";
@@ -12,6 +12,8 @@ class AppState {
   loading: boolean = false;
   network: API.NetworkData[] = [];
   online: boolean = false;
+  user: User.Model | null = null;
+  node: Node.Model | null = null;
 }
 
 type action = {

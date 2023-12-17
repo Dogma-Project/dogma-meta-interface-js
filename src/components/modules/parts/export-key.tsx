@@ -5,17 +5,14 @@ import Typography from "@mui/material/Typography";
 import { useContext, useEffect, useState } from "react";
 import { AppContext, WebsocketContext } from "../../../context";
 import { C_API } from "@dogma-project/constants-meta";
+import Paper from "@mui/material/Paper";
 
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
+  maxWidth: 500,
 };
 
 export default function ExportKeyModal(props: {
@@ -57,16 +54,25 @@ export default function ExportKeyModal(props: {
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        <Typography id="modal-modal-title" variant="h6" component="h2">
-          Export User Key
-        </Typography>
-        <Typography id="modal-modal-description" sx={{ my: 2 }}>
-          Save this file and import it when you will create a new nodes. Keep it
-          in secret - this is your main identity.
-        </Typography>
-        <Button disabled={!blob} href={blob} download={getFileName()}>
-          Save
-        </Button>
+        <Paper sx={{ p: 3 }}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Export User Key
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ my: 2 }}>
+            Save this file and import it when you will create a new nodes. Keep
+            it in secret - this is your main identity.
+          </Typography>
+          <Box sx={{ display: "flex", justifyContent: "right" }}>
+            <Button
+              disabled={!blob}
+              href={blob}
+              download={getFileName()}
+              variant="outlined"
+            >
+              Save
+            </Button>
+          </Box>
+        </Paper>
       </Box>
     </Modal>
   );
