@@ -10,7 +10,7 @@ import { C_API } from "@dogma-project/constants-meta";
 
 export default function User() {
   const [modal, setModal] = useState(false);
-  const { isReady, value, send } = useContext(WebsocketContext);
+  const { isReady, request } = useContext(WebsocketContext);
   const {
     state: { user, node },
     dispatch,
@@ -18,30 +18,32 @@ export default function User() {
 
   useEffect(() => {
     if (isReady) {
-      console.log("REQUEST", "GET NODE");
-      send({
-        type: C_API.ApiRequestType.node,
-        action: C_API.ApiRequestAction.get,
-      });
+      request(
+        {
+          type: C_API.ApiRequestType.node,
+          action: C_API.ApiRequestAction.get,
+        },
+        (result) => {
+          dispatch({
+            type: C_API.ApiRequestAction.set,
+            value: { node: result.payload },
+          });
+        }
+      );
+      request(
+        {
+          type: C_API.ApiRequestType.user,
+          action: C_API.ApiRequestAction.get,
+        },
+        (result) => {
+          dispatch({
+            type: C_API.ApiRequestAction.set,
+            value: { user: result.payload },
+          });
+        }
+      );
     }
   }, [isReady]);
-
-  useEffect(() => {
-    if (value) {
-      if (value.type === C_API.ApiRequestType.node) {
-        console.log("NODE", value.payload);
-        dispatch({
-          type: C_API.ApiRequestAction.set,
-          value: { node: value.payload },
-        });
-      } else if (value.type === C_API.ApiRequestType.user) {
-        dispatch({
-          type: C_API.ApiRequestAction.set,
-          value: { user: value.payload },
-        });
-      }
-    }
-  }, [value]);
 
   return (
     <>
