@@ -17,6 +17,8 @@ import DoNotDisturbOnTotalSilenceRoundedIcon from "@mui/icons-material/DoNotDist
 import StarsRoundedIcon from "@mui/icons-material/StarsRounded";
 import ComputerRoundedIcon from "@mui/icons-material/ComputerRounded";
 import RadioButtonCheckedRoundedIcon from "@mui/icons-material/RadioButtonCheckedRounded";
+import Paper from "@mui/material/Paper";
+import Divider from "@mui/material/Divider";
 
 function Network() {
   const {
@@ -42,72 +44,87 @@ function Network() {
 
   return (
     <>
-      {network.map((user, i) => {
-        return (
-          <Accordion
-            expanded={expanded === `user-${i}`}
-            onChange={handleChange(`user-${i}`)}
-            key={`userbox-${i}`}
-          >
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel3bh-content"
-              id="panel3bh-header"
+      <Paper
+        elevation={3}
+        sx={{ px: 1, py: 2, display: "flex", justifyContent: "center" }}
+      >
+        <Button variant="contained" startIcon={<PersonAddAltRoundedIcon />}>
+          New friend
+        </Button>
+      </Paper>
+
+      <Divider variant="middle" sx={{ my: 2 }} />
+
+      <Paper elevation={3} sx={{ p: 1 }}>
+        {network.map((user, i) => {
+          return (
+            <Accordion
+              expanded={expanded === `user-${i}`}
+              onChange={handleChange(`user-${i}`)}
+              key={`userbox-${i}`}
             >
-              <Stack direction="row" alignItems="center" gap={1}>
-                {user.current ? (
-                  <StarsRoundedIcon color="success" />
-                ) : user.requested ? (
-                  <QuestionMarkRoundedIcon color="warning" />
-                ) : (
-                  <AccountCircleRoundedIcon color="info" />
-                )}
-                <Typography sx={{ flexGrow: 1 }}>{user.name}</Typography>
-              </Stack>
-            </AccordionSummary>
-            {user.requested ? (
-              <AccordionDetails key={`nodebox-${i}`}>
-                <Typography>{user.id}</Typography>
-                <Stack direction="row" spacing={1}>
-                  <Button startIcon={<PersonAddAltRoundedIcon />}>Add</Button>
-                  <Button startIcon={<DoDisturbOffRoundedIcon />}>
-                    Decline
-                  </Button>
-                  <Button
-                    color="error"
-                    startIcon={<DoNotDisturbOnTotalSilenceRoundedIcon />}
-                  >
-                    Ban
-                  </Button>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel3bh-content"
+                id="panel3bh-header"
+              >
+                <Stack direction="row" alignItems="center" gap={1}>
+                  {user.current ? (
+                    <StarsRoundedIcon color="success" />
+                  ) : user.requested ? (
+                    <QuestionMarkRoundedIcon color="warning" />
+                  ) : (
+                    <AccountCircleRoundedIcon color="info" />
+                  )}
+                  <Typography sx={{ flexGrow: 1 }}>{user.name}</Typography>
                 </Stack>
-              </AccordionDetails>
-            ) : (
-              user.nodes.map((node, j) => {
-                return (
-                  <AccordionDetails key={`nodebox-${i}-${j}`}>
-                    <Stack
-                      direction="row"
-                      alignItems="center"
-                      gap={1}
-                      sx={{ mx: 2, display: "flex" }}
+              </AccordionSummary>
+              {user.requested ? (
+                <AccordionDetails key={`nodebox-${i}`}>
+                  <Typography>{user.id}</Typography>
+                  <Stack direction="row" spacing={1}>
+                    <Button startIcon={<PersonAddAltRoundedIcon />}>Add</Button>
+                    <Button startIcon={<DoDisturbOffRoundedIcon />}>
+                      Decline
+                    </Button>
+                    <Button
+                      color="error"
+                      startIcon={<DoNotDisturbOnTotalSilenceRoundedIcon />}
                     >
-                      {node.current ? (
-                        <StarsRoundedIcon color="success" />
-                      ) : (
-                        <ComputerRoundedIcon color="info" />
-                      )}
-                      <Typography sx={{ flexGrow: 1 }}>{node.name}</Typography>
-                      {node.online && (
-                        <RadioButtonCheckedRoundedIcon color="success" />
-                      )}
-                    </Stack>
-                  </AccordionDetails>
-                );
-              })
-            )}
-          </Accordion>
-        );
-      })}
+                      Ban
+                    </Button>
+                  </Stack>
+                </AccordionDetails>
+              ) : (
+                user.nodes.map((node, j) => {
+                  return (
+                    <AccordionDetails key={`nodebox-${i}-${j}`}>
+                      <Stack
+                        direction="row"
+                        alignItems="center"
+                        gap={1}
+                        sx={{ mx: 2, display: "flex" }}
+                      >
+                        {node.current ? (
+                          <StarsRoundedIcon color="success" />
+                        ) : (
+                          <ComputerRoundedIcon color="info" />
+                        )}
+                        <Typography sx={{ flexGrow: 1 }}>
+                          {node.name}
+                        </Typography>
+                        {node.online && (
+                          <RadioButtonCheckedRoundedIcon color="success" />
+                        )}
+                      </Stack>
+                    </AccordionDetails>
+                  );
+                })
+              )}
+            </Accordion>
+          );
+        })}
+      </Paper>
     </>
   );
 }

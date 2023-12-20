@@ -10,6 +10,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import { useContext, useState } from "react";
 import { C_API } from "@dogma-project/constants-meta";
 import { AppContext, WebsocketContext } from "../context";
+
 function AppHeader({
   handleDrawerToggle,
 }: {
@@ -77,7 +78,7 @@ function AppHeader({
             aria-controls="menu-appbar"
             aria-haspopup="true"
             onClick={handleMenu}
-            color="inherit"
+            color="primary"
           >
             <AccountCircle />
           </IconButton>

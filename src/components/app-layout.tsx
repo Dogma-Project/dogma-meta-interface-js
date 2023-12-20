@@ -42,7 +42,7 @@ function AppLayout() {
             },
           }}
         >
-          <LeftMenu></LeftMenu>
+          <LeftMenu drawerState={setMobileOpen}></LeftMenu>
         </Drawer>
         <Drawer
           variant="permanent"

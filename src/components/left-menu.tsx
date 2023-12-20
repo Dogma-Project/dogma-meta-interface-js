@@ -13,33 +13,56 @@ import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import MiscellaneousServicesRoundedIcon from "@mui/icons-material/MiscellaneousServicesRounded";
 import InfoRoundedIcon from "@mui/icons-material/InfoRounded";
 import HubRoundedIcon from "@mui/icons-material/HubRounded";
+import ChatRoundedIcon from "@mui/icons-material/ChatRounded";
 
-export default function LeftMenu() {
+export default function LeftMenu(props: {
+  drawerState?: (value: React.SetStateAction<boolean>) => void;
+}) {
+  const click = () => {
+    props.drawerState && props.drawerState(false);
+  };
+
   return (
     <div>
       {/* <Toolbar /> */}
       <Divider />
       <List>
         <ListItem key={"home"} disablePadding>
-          <ListItemButton href="#/">
+          <ListItemButton href="#/" onClick={click}>
             <ListItemIcon>
               <HomeRoundedIcon />
             </ListItemIcon>
             <ListItemText primary="Home" />
           </ListItemButton>
         </ListItem>
-
         <ListItem key={"network"} disablePadding>
-          <ListItemButton href="#/network">
+          <ListItemButton href="#/network" onClick={click}>
             <ListItemIcon>
               <HubRoundedIcon />
             </ListItemIcon>
             <ListItemText primary="Network" />
           </ListItemButton>
         </ListItem>
+        <ListItem key={"user"} disablePadding>
+          <ListItemButton href="#/user" onClick={click}>
+            <ListItemIcon>
+              <ManageAccountsRoundedIcon />
+            </ListItemIcon>
+            <ListItemText primary="User" />
+          </ListItemButton>
+        </ListItem>
+
+        <ListItem key={"chats"} disablePadding>
+          <ListItemButton href="#/chats" disabled onClick={click}>
+            <ListItemIcon>
+              <ChatRoundedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Chats" />
+          </ListItemButton>
+        </ListItem>
 
         <ListItem key={"storage"} disablePadding>
-          <ListItemButton href="#/storage" disabled>
+          <ListItemButton href="#/storage" disabled onClick={click}>
             <ListItemIcon>
               <SourceRoundedIcon />
             </ListItemIcon>
@@ -48,27 +71,18 @@ export default function LeftMenu() {
         </ListItem>
 
         <ListItem key={"mail"} disablePadding>
-          <ListItemButton href="#/mail" disabled>
+          <ListItemButton href="#/mail" disabled onClick={click}>
             <ListItemIcon>
               <MailRoundedIcon />
             </ListItemIcon>
             <ListItemText primary="Mail" />
           </ListItemButton>
         </ListItem>
-
-        <ListItem key={"user"} disablePadding>
-          <ListItemButton href="#/user">
-            <ListItemIcon>
-              <ManageAccountsRoundedIcon />
-            </ListItemIcon>
-            <ListItemText primary="User" />
-          </ListItemButton>
-        </ListItem>
       </List>
       <Divider />
       <List>
         <ListItem key={"settings"} disablePadding>
-          <ListItemButton href="#/settings">
+          <ListItemButton href="#/settings" onClick={click}>
             <ListItemIcon>
               <SettingsRoundedIcon />
             </ListItemIcon>
@@ -77,7 +91,7 @@ export default function LeftMenu() {
         </ListItem>
 
         <ListItem key={"services"} disablePadding>
-          <ListItemButton href="#/services">
+          <ListItemButton href="#/services" onClick={click}>
             <ListItemIcon>
               <MiscellaneousServicesRoundedIcon />
             </ListItemIcon>
@@ -86,7 +100,7 @@ export default function LeftMenu() {
         </ListItem>
 
         <ListItem key={"about"} disablePadding>
-          <ListItemButton href="#/about">
+          <ListItemButton href="#/about" onClick={click}>
             <ListItemIcon>
               <InfoRoundedIcon />
             </ListItemIcon>

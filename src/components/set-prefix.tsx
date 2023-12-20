@@ -11,27 +11,35 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
+import LocalStorage from "../helpers/localStorage";
 
 function SetPrefix() {
   const { dispatch } = useContext(AppContext);
   const { manager, isReady } = useContext(WebsocketContext);
 
+  const st = new LocalStorage("");
+
   const [value, setValue] = useState("");
+  const [prefix, setPrefix] = useState("");
   const [prefixes, setPrefixes] = useState<string[]>([]);
+
   const saveValue = () => {
+    const final = prefix && prefix.length ? prefix : value;
+    // if value empty return
+    st.set("prefix-name", final);
     manager(
       {
         type: C_API.ApiRequestType.prefix,
         action: C_API.ApiRequestAction.set,
         payload: {
-          prefix: value,
+          prefix: final,
         },
       },
       () => {
         dispatch({
           type: C_API.ApiRequestAction.set,
           value: {
-            prefix: value,
+            prefix: final,
           },
         });
       }
@@ -46,14 +54,15 @@ function SetPrefix() {
       },
       (res) => {
         setPrefixes(res.payload || []);
+        const last = st.get("prefix-name", "default");
+        if (res.payload.indexOf(last) > -1) {
+          setPrefix(last);
+        } else {
+          setValue(last);
+        }
       }
     );
   }, [isReady]);
-
-  // height: 100vh;
-  // width: 100vw;
-  // align-items: center;
-  // justify-content: center;
 
   return (
     <Box
@@ -79,7 +88,7 @@ function SetPrefix() {
             <FormControl variant="outlined" fullWidth>
               <InputLabel id="select-prefix-options">Select prefix</InputLabel>
               <Select
-                onChange={(e) => setValue(String(e.target.value))}
+                onChange={(e) => setPrefix(String(e.target.value))}
                 inputProps={{
                   name: "prefixes",
                   id: "select-prefix-options",
@@ -87,6 +96,7 @@ function SetPrefix() {
                 sx={{
                   my: 3,
                 }}
+                value={prefix}
               >
                 <MenuItem key="create_new" value={""}>
                   Create new
@@ -100,18 +110,20 @@ function SetPrefix() {
             </FormControl>
           )}
 
-          <TextField
-            fullWidth
-            id="standard-basic"
-            label="Or create a new prefix"
-            variant="outlined"
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-          />
+          {!prefix && (
+            <TextField
+              fullWidth
+              id="standard-basic"
+              label="Or create a new prefix"
+              variant="outlined"
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+            />
+          )}
         </CardContent>
         <InitScreenActions
           onConfirm={saveValue}
-          confirmDisabled={value.length < 3}
+          confirmDisabled={(prefix || value).length < 3}
         ></InitScreenActions>
       </Card>
     </Box>

@@ -7,6 +7,9 @@ import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import { AppContext, WebsocketContext } from "../../context";
 import { C_API } from "@dogma-project/constants-meta";
+import IconButton from "@mui/material/IconButton";
+
+import EditNoteIcon from "@mui/icons-material/EditNote";
 
 export default function User() {
   const [modal, setModal] = useState(false);
@@ -66,14 +69,17 @@ export default function User() {
           </Typography>
           <Typography variant="body2">{user?.user_id}</Typography>
         </CardContent>
-        <CardActions sx={{ display: "flex", justifyContent: "right" }}>
+        <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
           <Button
             onClick={() => setModal(true)}
             sx={{ m: 2 }}
             variant="contained"
           >
-            Export key
+            Export
           </Button>
+          <IconButton aria-label="delete" color="primary">
+            <EditNoteIcon />
+          </IconButton>
         </CardActions>
       </Card>
 
@@ -90,9 +96,9 @@ export default function User() {
           </Typography>
         </CardContent>
         <CardActions sx={{ display: "flex", justifyContent: "right" }}>
-          <Button sx={{ m: 2 }} variant="contained" disabled>
-            Info
-          </Button>
+          <IconButton aria-label="delete" color="primary">
+            <EditNoteIcon />
+          </IconButton>
         </CardActions>
       </Card>
     </>
